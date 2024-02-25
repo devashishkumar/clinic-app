@@ -1,0 +1,162 @@
+<div class="flex flex-wrap mx-1 mt-3">
+    <div class="w-full max-w-full mt-0 mb-6 lg:mb-0 lg:flex-none ">
+        <div
+            class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid rounded-md shadow-xl dark:bg-slate-850 dark:shadow-dark-xl dark:bg-gray-950 border-black-125 bg-clip-border">
+            <div class="p-4 pb-0 mb-0 rounded-t-4">
+                <div class="flex flex-col justify-between w-full columns-1">
+                    <form role="form" class="w-full px-20" enctype="multipart/form-data"
+                        (ngSubmit)="confirmCurrentPatient()" [formGroup]="confirmPatientForm">
+                        <div class="w-full mb-4 ">
+                            <span class="flex justify-start px-1 py-2 text-sm text-black dark:text-white">Confirmate
+                                your DUI</span>
+                            <div class="relative">
+                                <input type="text"
+                                    class="placeholder:text-gray-700 disabled:opacity-50 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg  bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3  font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow"
+                                    placeholder="Document Number" formControlName="document_number" mask="00000000-0" />
+                            </div>
+                            <div *ngIf="document_number?.invalid && (document_number?.dirty || document_number?.touched)"
+                                class="alert alert-danger">
+
+                                <div *ngIf="document_number?.errors?.['required']">
+                                    <span class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                                        <mat-icon class="mx-2" fontIcon="error" />
+                                        DUI is required.
+                                    </span>
+                                </div>
+                                <div *ngIf="document_number?.errors?.['minlength']">
+                                    <span class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                                        <mat-icon class="mx-2" fontIcon="error" />
+                                        DUI must be at least 9 characters long.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="!isDocument_numberCorrenct" class="flex justify-center w-full mb-4">
+                            <button mat-raised-button type="submit" class="dark:disabled:text-white/50"
+                                [disabled]="confirmPatientForm.invalid" [disabled]="!isDocument_numberCorrenct"
+                                color="warn"><mat-icon>badge</mat-icon>Confirmate your document number</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="isDocument_numberCorrenct" class="flex flex-wrap mx-1 mt-3">
+    <div class="w-full max-w-full mt-0 mb-6 lg:mb-0 lg:flex-none ">
+        <div class="flex justify-center w-full my-5">
+            <div class="flex flex-col p-3 rounded-lg shadow-lg columns-1 w-fit bg-slate-100">
+                <div class="flex w-full">
+                    <p class="text-xl font-bold text-slate-850">Patient ID</p>
+                </div>
+                <div class="flex w-full">
+                    <div class="my-auto">
+                        <img [src]="patient?.photo||'assets/img/no-photo-user.png'"
+                            class="inline-flex items-center justify-center object-cover object-top mr-4 overflow-hidden text-sm text-white bg-orange-300 w-34 h-34 max-w-none rounded-xl" />
+                    </div>
+                    <div class="flex flex-col justify-center">
+                        <p class="mb-1 text-sm font-normal capitalize text-slate-850"><span
+                                class="font-semibold">Full Name : </span><span class="font-normal">{{
+                                patient?.name }} {{patient?.lastname}}</span></p>
+                        <p class="mb-1 text-sm font-normal capitalize text-slate-850"><span
+                                class="font-semibold">Document Number : </span><span
+                                class="font-normal">{{ patient!.document_number |
+                                mask:'00000000-0'}}</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="relative flex flex-col min-w-0 mb-5 break-words bg-white border-0 border-solid rounded-md shadow-xl dark:bg-slate-850 dark:shadow-dark-xl dark:bg-gray-950 border-black-125 bg-clip-border">
+            <div class="p-4 pb-0 mb-0 rounded-t-4">
+                <div class="flex flex-col justify-between w-full columns-1">
+                    <div class="flex flex-col justify-center w-full columns-1">
+                        <div class="flex flex-wrap mx-1 mt-3">
+                            <div class="w-full max-w-full mt-0 mb-6 lg:mb-0 lg:flex-none">
+                                <div class="p-4 pb-0 mb-0 rounded-t-4">
+                                    <div class="flex justify-between">
+                                        <p class="text-2xl font-semibold text-black text-start dark:text-white">Medical
+                                            Records History</p>
+                                        <button *ngIf="userRol==='doctor'" (click)="createNewMedicalRecord()"
+                                            color="primary" mat-raised-button class="z-0">
+                                            <mat-icon fontIcon="healing"></mat-icon> <span>New Medical Record</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div *ngIf="medicalRecordsList" class="overflow-x-auto">
+                                    <table class="items-center w-full my-5 mt-4 mb-4 align-top border-collapse border-gray-200 dark:border-white/40">
+                                        <tbody>
+                                            <tr *ngFor="let record of medicalRecordsList"
+                                                class="flex w-full min-w-full border-b border-black/40 dark:border-white/40 ">
+
+
+                                                <td class="w-full p-2 align-middle bg-transparent whitespace-nowrap ">
+                                                    <div class="text-center align-top">
+                                                        <p
+                                                            class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">
+                                                            Fecha:</p>
+                                                        <h6 class="mb-0 text-sm leading-normal dark:text-white">{{
+                                                            record.date | date:'medium'}}</h6>
+                                                    </div>
+                                                </td>
+                                                <td class="w-full p-2 align-middle bg-transparent whitespace-nowrap ">
+                                                    <div class="text-center align-top">
+                                                        <p
+                                                            class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">
+                                                            Doctor</p>
+                                                        <h6 class="mb-0 text-sm leading-normal dark:text-white">
+                                                            {{record.doctor.name}}</h6>
+                                                    </div>
+                                                </td>
+                                                <td class="w-full p-2 align-middle bg-transparent whitespace-nowrap ">
+                                                    <div class="text-center align-top">
+                                                        <p
+                                                            class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">
+                                                            Motivo de consulta:</p>
+                                                        <h6
+                                                            class="mb-0 text-sm leading-normal uppercase dark:text-white">
+                                                            {{record.title}}</h6>
+                                                    </div>
+                                                </td>
+
+                                                <td
+                                                    class="px-4 py-2 align-middle bg-transparent w-fit whitespace-nowrap ">
+                                                    <div class="flex-col items-center space-y-1 align-top">
+                                                        <p
+                                                            class="mb-0 text-xs font-semibold leading-tight text-center dark:text-white dark:opacity-60">
+                                                            Actions:</p>
+                                                        <div class="flex items-center justify-center space-x-2">
+                                                            <button *ngIf="userRol==='doctor'" mat-mini-fab
+                                                                color="primary" (click)="editMedicalRecord(record.id)"
+                                                                type="button"><mat-icon>edit</mat-icon>
+                                                            </button>
+                                                            <button mat-mini-fab color="primary"
+                                                                (click)="showMedicalRecord(record.id)"
+                                                                type="button"><mat-icon>visibility</mat-icon>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <div *ngIf=" length > pageSize "
+                                                class="flex justify-end px-2 pt-2 mx-2 mt-2">
+                                                <mat-paginator class="flex h-full bg-transparent w-fit dark:text-white "
+                                                    MatPaginatorIntl (page)="handlePageEvent($event)" [length]="length"
+                                                    [pageSize]="pageSize" [pageIndex]="pageIndex">
+                                                </mat-paginator>
+                                            </div>
+                                        </tbody>
+                                    </table>
+                                    <div *ngIf="length===0" class="flex justify-center w-full p-5 ">
+                                        <p class="text-2xl font-bold text-black dark:text-white">No medical records have
+                                            been registered yet</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

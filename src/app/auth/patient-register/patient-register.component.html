@@ -1,0 +1,296 @@
+<div class="w-full ">
+    
+    <div class="flex justify-center ">
+      <div class="w-full p-5 px-10 space-y-2 shadow-xl m-7 bg-slate-50 dark:shadow-none rounded-xl dark:bg-slate-850">
+        <p class="text-2xl text-start">Patient Register form</p>
+  
+        <form role="form text-left w-full" enctype="multipart/form-data" (ngSubmit)="createPatient()" [formGroup]="registerPatientForm">
+          <div class="py-5 ">
+              <div class="grid grid-cols-1 gap-4 ">
+                <div class="grid w-full grid-cols-1 gap-4 mb-4 md:grid-cols-2">
+                  <div class="mb-4">
+                    <span class="px-1 py-2 text-sm text-white/80">Document Number</span>
+                    <div class="flex rounded-md ">
+                      <span class="inline-flex items-center px-3 py-4 text-sm font-normal transition-all border-none rounded-l-lg cursor-pointer bg-blue-500/13 dark:bg-blue-500/13 dark:placeholder:text-slate-300 text-slate-800 dark:text-slate-100 bg-clip-padding focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow">
+                        <div class="flex items-center justify-center align-middle">
+                          <select 
+                            class="uppercase bg-transparent border-none focus:outline-none" 
+                            name="document"
+                            formControlName="document_type"
+                          > 
+                            <option value="DUI">DUI</option>
+                            <option value="PASSPORT">PASSPORT</option>
+                          </select>
+                        </div>
+                      </span>
+                      <input 
+                        *ngIf="document_type==='DUI'"
+                        type="text"  
+                        class="placeholder:text-gray-700 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full border-r-0 appearance-none rounded-r-lg border border-l  border-y-0 border-r-gray-300 bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3  font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+                        placeholder="DUI" 
+                        formControlName="document_number"
+                        mask="00000000-0"
+                      />
+                      <input 
+                      *ngIf="document_type==='PASSPORT'"
+                      type="text"  
+                      class="placeholder:text-gray-700 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-r-lg border border-l border-y-0 border-r-0 border-r-gray-300 bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3  font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+                      placeholder="PASSPORT" 
+                      formControlName="document_number"
+                      mask="A0000000"
+                    />
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                    <span class="px-1 py-2 text-sm text-white/80">Email</span>
+                    <div class="flex rounded-md ">
+                      <input 
+                        type="text" 
+                        class="placeholder:text-gray-700 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-l-lg border border-l-0 border-r border-y-0 border-gray-300 bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3  font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+                        placeholder="Email" 
+                        formControlName="email_name"
+                      />
+                      
+                    
+                    <span class="inline-flex items-center px-3 py-4 text-sm font-normal transition-all border-none rounded-r-lg cursor-pointer bg-blue-500/13 dark:placeholder:text-slate-300 text-slate-800 dark:text-slate-100 bg-clip-padding focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow">
+                      <div class="flex items-center justify-center align-middle">
+                        <select 
+                          class="lowercase bg-transparent border-none focus:outline-none" 
+                          name="document"
+                          formControlName="email_provider"
+                        > 
+                          <option value="@gmail.com">@gmail.com</option>
+                          <option value="@theclinic.com">@theclinic.com</option>
+                        </select>
+                      </div>
+                    </span>
+                    </div>
+                    
+                    <div *ngIf="email_name?.invalid && (email_name?.dirty || email_name?.touched)">
+                      <div  *ngIf="email_name?.errors?.['required']">
+                        <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                          <mat-icon class="mx-2"  fontIcon="error"/> 
+                          mail is required.
+                        </span>
+                      </div>
+                      <div *ngIf="email_name?.errors?.['minlength']">
+                        <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                          <mat-icon class="mx-2"  fontIcon="error"/>
+                          mail must be at least 10 characters long.
+                        </span>
+                      </div>
+                      <div *ngIf="email_name?.errors?.['forbiddenName']">
+                        <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                          <mat-icon class="mx-2 "  fontIcon="error"/>
+                            mail only could have  
+                            a-z and dot(.) or  underscore(_)
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+   <!-- password -->
+            <div class="w-full mb-4"  *ngIf="(confirmationPassword?.dirty || confirmationPassword?.touched) && (password?.dirty || password?.touched)" >
+                <div *ngIf="!isPassworCorrect">
+                <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                    <mat-icon class="mx-2"  fontIcon="error"/> 
+                    Password End Confirmation are not equals
+                </span>
+                </div>
+            </div>
+              <div class="grid w-full grid-cols-1 gap-4 mb-4 md:grid-cols-2">
+              
+                <div class="w-full mb-4">
+                  <span class="px-1 py-2 text-sm text-white/80">Password </span>
+                  <input 
+                  type={{type}} 
+                  class="placeholder:text-gray-700 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg  bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3  font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+                  placeholder="password" 
+                  formControlName="password"
+                  />
+                  <div *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+                      class="alert alert-danger">
+  
+                    <div  *ngIf="password?.errors?.['required']">
+                      <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                        <mat-icon class="mx-2"  fontIcon="error"/> 
+                        password is required.
+                      </span>
+                    </div>
+                    <div *ngIf="password?.errors?.['minlength']">
+                      <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                        <mat-icon class="mx-2"  fontIcon="error"/>
+                        Name must be at least 8 characters long.
+                      </span>
+                    </div>
+                  </div>
+    
+                </div>
+                <div class="w-full mb-4">
+                  <span class="px-1 py-2 text-sm text-white/80">Password  Confirmation</span>
+                  <div class="relative">
+                    <input 
+                    type={{type}}
+                    class="placeholder:text-gray-700 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg  bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3  font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+                    placeholder="Confirmation Passoword" 
+                    formControlName="confirmationPassword"
+                    />
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+                        <button (click)="changeVisibility()" *ngIf="visibility" mat-icon-button matTooltip="Basic" aria-label="Example icon-button with a heart icon">
+                            <mat-icon>visibility_off</mat-icon>
+                        </button>
+                        <button (click)="changeVisibility()"  *ngIf="!visibility" mat-icon-button matTooltip="Basic" aria-label="Example icon-button with a heart icon">
+                            <mat-icon>visibility</mat-icon>
+                        </button>
+                    </div>
+
+                  </div>
+                  <div *ngIf="confirmationPassword?.invalid && (confirmationPassword?.dirty || confirmationPassword?.touched)">
+                    <div  *ngIf="confirmationPassword?.errors?.['required']">
+                      <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                        <mat-icon class="mx-2"  fontIcon="error"/> 
+                         Confirmation Password is required.
+                      </span>
+                    </div>
+                    <div *ngIf="confirmationPassword?.errors?.['minlength']">
+                      <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                        <mat-icon class="mx-2"  fontIcon="error"/>
+                        Confirmation Password must be at least 8 characters long.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+     <!-- password-->
+            
+              <div class="grid w-full grid-cols-1 gap-4 mb-4 md:grid-cols-2">
+                <div class="w-full mb-4">
+                  <span class="px-1 py-2 text-sm text-white/80">Name</span>
+                  <input 
+                  type="text"  
+                  class="placeholder:text-gray-700 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg  bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3  font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+                  placeholder="Name" 
+                  formControlName="name"
+                  />
+                  <div *ngIf="name?.invalid && (name?.dirty || name?.touched)"
+                      class="alert alert-danger">
+  
+                    <div  *ngIf="name?.errors?.['required']">
+                      <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                        <mat-icon class="mx-2"  fontIcon="error"/> 
+                        Name is required.
+                      </span>
+                    </div>
+                    <div *ngIf="name?.errors?.['minlength']">
+                      <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                        <mat-icon class="mx-2"  fontIcon="error"/>
+                        Name must be at least 3 characters long.
+                      </span>
+                    </div>
+                    <div *ngIf="name?.errors?.['maxlength']">
+                      <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                        <mat-icon class="mx-2"  fontIcon="error"/>
+                        Name must be longger than 25 characters.
+                      </span>
+                    </div>
+                    <div *ngIf="name?.errors?.['forbiddenName']">
+                      <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                        <mat-icon class="mx-2"  fontIcon="error"/>
+                          Name only could have letters a-z.
+                      </span>
+                      <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                        <mat-icon class="mx-2"  fontIcon="error"/>
+                          Only two names are allowed.
+                      </span>
+                    </div>
+                  </div>
+    
+                </div>
+                <div class="w-full mb-4">
+                  <span class="px-1 py-2 text-sm text-white/80">Last Name</span>
+                  <input 
+                  type="text"  
+                  class="placeholder:text-gray-700 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg  bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3  font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+                  placeholder="Lastname" 
+                  formControlName="lastname"
+    
+                  />
+                  <div *ngIf="lastname?.invalid && (lastname?.dirty || lastname?.touched)">
+                    <div  *ngIf="lastname?.errors?.['required']">
+                      <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                        <mat-icon class="mx-2"  fontIcon="error"/> 
+                        Lastame is required.
+                      </span>
+                    </div>
+                    <div *ngIf="lastname?.errors?.['minlength']">
+                      <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                        <mat-icon class="mx-2"  fontIcon="error"/>
+                        Lastname must be at least 3 characters long.
+                      </span>
+                    </div>
+                    <div *ngIf="lastname?.errors?.['forbiddenName']">
+                      <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                        <mat-icon class="mx-2"  fontIcon="error"/>
+                          Lastname only could have letters a-z.
+                      </span>
+                      <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                        <mat-icon class="mx-2"  fontIcon="error"/>
+                          Only two lastnames are allowed.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+           
+              <div class="grid w-full grid-cols-1 gap-4 mb-4 md:grid-cols-2">
+                <div class="w-full mb-4">
+                  <span class="px-1 py-2 text-sm text-white/80">Phone Number</span>
+                  <input 
+                  type="text"  
+                  class="placeholder:text-gray-700  text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg  bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3 font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+                  placeholder="Phone" 
+                  formControlName="phone"
+                  prefix="+503"
+                  mask="0000-0000"
+                  />
+                </div>
+                <div class="w-full mb-4">
+                  <span class="px-1 py-2 text-sm text-white/80">Choose your gender</span>
+                  <fieldset class="px-3 py-1 " data-role="controlgroup">
+                    
+                    <div class="float-left">
+                      <label for="male">Male</label>
+                      <input 
+                       type="radio"
+                       class="w-4.8 h-4.8 ease mx-3 rounded-1.4 checked:bg-gradient-to-tl checked:from-blue-500 checked:to-violet-500 after:text-xxs after:font-awesome after:duration-250 after:ease-in-out duration-250 relative float-left mt-1 cursor-pointer appearance-none border border-solid border-slate-200 dark:border-slate-750 bg-blue-800/13 bg-contain bg-center bg-no-repeat align-top transition-all after:absolute after:flex after:h-full after:w-full after:items-center after:justify-center after:text-white after:opacity-0 after:transition-all after:content-['\f00c'] checked:border-0 checked:border-transparent checked:bg-transparent checked:after:opacity-100"
+                       name="gender" 
+                       id="male" 
+                       value="male"
+                       formControlName="gender"
+                       >
+                    </div>
+                     <div class="float-right">
+                      <label for="female">Female</label>
+                      <input 
+                       type="radio" 
+                       class="w-4.8 h-4.8 ease mx-3 rounded-1.4 checked:bg-gradient-to-tl checked:from-blue-500 checked:to-violet-500 after:text-xxs after:font-awesome after:duration-250 after:ease-in-out duration-250 relative float-left mt-1 cursor-pointer appearance-none border border-solid border-slate-200 dark:border-slate-750  bg-blue-800/13 bg-contain bg-center bg-no-repeat align-top transition-all after:absolute after:flex after:h-full after:w-full after:items-center after:justify-center after:text-white after:opacity-0 after:transition-all after:content-['\f00c'] checked:border-0 checked:border-transparent checked:bg-transparent checked:after:opacity-100"
+                       name="gender"
+                       id="female" 
+                       value="female"
+                       formControlName="gender"
+                       >
+                     </div> 
+                    </fieldset>
+                </div>
+              </div>
+
+            </div>
+            <div class="flex float-right w-fit">
+                <button mat-raised-button type="submit" color="accent" [disabled]="registerPatientForm.invalid" class=""><mat-icon fontIcon="person_add"></mat-icon> Register</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+

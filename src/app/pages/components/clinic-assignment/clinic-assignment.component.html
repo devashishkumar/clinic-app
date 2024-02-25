@@ -1,0 +1,66 @@
+<div class="flex flex-wrap mx-3 mt-6">
+    <div class="w-full max-w-full px-3 mt-0 mb-6 lg:mb-0 lg:flex-none">
+      <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl dark:bg-gray-950 border-black-125 rounded-2xl bg-clip-border">
+        <div class="p-4 pb-0 mb-0 rounded-t-4">
+          <div class="flex justify-between">
+            <p class="text-2xl font-semibold text-black text-start dark:text-white">Doctors assigned</p>
+            <div *ngIf="userRol==='admin'" class="flex space-x-3 ">
+              <button (click)="removeallassigned()" [disabled]="!hasAssignments" color="warn"  mat-raised-button class="z-0">
+                <mat-icon  fontIcon="remove_circle"></mat-icon> <span>remove all assigned</span> 
+              </button>
+              <button (click)="assignmentListDialog()"  color="primary"  mat-raised-button class="z-0">
+                <mat-icon  fontIcon="assignment_turned_in"></mat-icon> <span>Assign new</span> 
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="items-center w-full mt-4 mb-4 align-top border-collapse border-gray-200 dark:border-white/40">
+            <tbody>
+              <tr  *ngFor="let doctor of doctorsAssignedList" class="flex w-full min-w-full border-b border-black/40 dark:border-white/40 ">
+                
+                  <td class="flex p-2 align-middle bg-transparent w-fit whitespace-nowrap ">
+                      <div class="flex items-center align-top">
+                          <div>
+                            <img [src]="doctor.photo||'assets/img/no-photo-clinic.png'" class="inline-flex items-center justify-center object-cover object-top w-20 h-20 mr-4 overflow-hidden text-sm text-white bg-slate-500 max-w-none rounded-xl" />  
+                          </div>
+                      </div>
+                  </td>
+                  <td class="w-full p-2 align-middle bg-transparent whitespace-nowrap ">
+                      <div class="text-center align-top">
+                        <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Doctor name:</p>
+                    <h6 class="mb-0 text-sm leading-normal dark:text-white">{{doctor.name}} {{doctor.lastname}}</h6>
+                      </div>
+                  </td>
+                  <td *ngIf="userRol==='admin'"  class="px-4 py-2 align-middle bg-transparent w-fit whitespace-nowrap ">
+                    <div class="flex-col items-center space-y-1 align-top">
+                      <p class="mb-0 text-xs font-semibold leading-tight text-center dark:text-white dark:opacity-60">Actions:</p>
+                        <div class="flex items-center justify-center">
+                          <button mat-raised-button (click)="removeADoctorAssigned(doctor.reference, doctor.doctor_id)" color="warn" class="z-0">
+                              <mat-icon  fontIcon="person_remove"></mat-icon> Remove
+                          </button>
+                        </div>
+                    </div>
+                  </td>
+              </tr>
+              <div *ngIf="length>pageSize" class="flex justify-end px-2 pt-2 mx-2 mt-2" >
+                <mat-paginator 
+                  class="flex h-full bg-transparent w-fit dark:text-white"
+                  MatPaginatorIntl
+                  (page)="handlePageEvent($event)"
+                  [length]="length"
+                  [pageSize]="pageSize"
+                  [pageIndex]="pageIndex"
+                  
+                  >
+                </mat-paginator>
+              </div>
+            </tbody>
+          </table>
+          <div *ngIf="length===0" class="flex justify-center w-full p-5 ">
+            <p class="text-2xl font-bold text-black dark:text-white">No doctors have been assigned yet</p>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

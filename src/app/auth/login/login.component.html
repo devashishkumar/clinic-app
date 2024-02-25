@@ -1,0 +1,206 @@
+<style type="text/css">
+  #customBtn {
+    display: inline-block;
+    background: white;
+    color: #444;
+    width: 190px;
+    border-radius: 5px;
+    border: thin solid #888;
+    box-shadow: 1px 1px 1px grey;
+    white-space: nowrap;
+  }
+  #customBtn:hover {
+    cursor: pointer;
+  }
+  span.label {
+    font-family: serif;
+    font-weight: normal;
+  }
+  span.icon {
+    background: url("/identity/sign-in/g-normal.png") transparent 5px 50%
+      no-repeat;
+    display: inline-block;
+    vertical-align: middle;
+    width: 42px;
+    height: 42px;
+  }
+  span.buttonText {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 42px;
+    padding-right: 42px;
+    font-size: 14px;
+    font-weight: bold;
+    /* Use the Roboto font that is loaded in the <head> */
+    font-family: "Roboto", sans-serif;
+  }
+</style>
+<main class="mt-0">
+  <section class="min-h-full">
+    <div
+      class="bg-top relative z-10 flex items-start pt-12 overflow-hidden bg-cover min-h-135 bg-[url('assets/img/signup-cover-image.jpg')]"
+    >
+      <span
+        class="absolute top-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-zinc-800 to-zinc-700 opacity-30 dark:opacity-60"
+      ></span>
+    </div>
+    <div>
+      <div class="absolute top-0 w-full h-screen bg-slate-50 dark:bg-slate-800">
+        <div
+          class="w-full max-w-full px-3 mx-auto mt-12 md:flex-0 shrink-0 md:w-7/12 lg:w-5/12 xl:w-4/12"
+        >
+          <div
+            class="relative z-10 flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-900 rounded-2xl bg-clip-border"
+          >
+            <div class="p-6 mb-0 text-center border-b-0 rounded-t-2xl">
+              <h5
+                class="text-xl font-bold text-center text-slate-600 dark:text-slate-200"
+              >
+                Register
+              </h5>
+            </div>
+            <div class="grid items-center justify-center align-middle sm:px-10">
+              <div
+                class="flex justify-center w-full max-w-full px-1 ml-auto align-middle flex-0"
+              >
+                <div #googleLogin></div>
+              </div>
+              <div
+                class="relative w-full max-w-full px-3 mt-2 text-center shrink-0"
+              >
+                <p
+                  class="z-20 inline px-4 mb-2 text-sm font-semibold leading-normal bg-transparent text-slate-400"
+                >
+                  or
+                </p>
+              </div>
+            </div>
+            <div class="flex-auto p-6">
+              <form
+                role="form"
+                (ngSubmit)="loginWithEmailAndPassword()"
+                [formGroup]="loginForm"
+              >
+                <div class="mb-4">
+                  <span class="px-1 py-2 text-sm text-white/80">Email</span>
+                  <input
+                    type="email"
+                    class="placeholder:text-gray-700 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300 bg-clip-padding py-4 px-3 font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700 focus:outline-none focus:transition-shadow"
+                    placeholder="Email"
+                    aria-label="Email"
+                    aria-describedby="email-addon"
+                    formControlName="email"
+                    value="email?.value"
+                  />
+                  <div
+                    *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+                  >
+                    <div *ngIf="email?.errors?.['required']">
+                      <span
+                        class="flex items-center pt-2 text-red-800 dark:text-red-400"
+                      >
+                        <mat-icon class="mx-2" fontIcon="error" />
+                        mail is required.
+                      </span>
+                    </div>
+                    <div *ngIf="email?.errors?.['email']">
+                      <span
+                        class="flex items-center pt-2 text-red-800 dark:text-red-400"
+                      >
+                        <mat-icon class="mx-2" fontIcon="error" />
+                        mail must have a valid mail format.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-4">
+                  <span class="px-1 py-2 text-sm text-white/80">Password</span>
+                  <div class="relative flex">
+                    <input
+                      type="{{ type }}"
+                      class="placeholder:text-gray-700 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300 bg-clip-padding py-4 px-3 font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700 focus:outline-none focus:transition-shadow"
+                      placeholder="passoword"
+                      formControlName="password"
+                    />
+                    <div
+                      class="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5"
+                    >
+                      <button
+                        (click)="changeVisibility()"
+                        *ngIf="visibility"
+                        mat-icon-button
+                        matTooltip="Basic"
+                        aria-label="Example icon-button with a heart icon"
+                      >
+                        <mat-icon>visibility_off</mat-icon>
+                      </button>
+                      <button
+                        (click)="changeVisibility()"
+                        *ngIf="!visibility"
+                        mat-icon-button
+                        matTooltip="Basic"
+                        aria-label="Example icon-button with a heart icon"
+                      >
+                        <mat-icon>visibility</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="
+                      password?.invalid &&
+                      (password?.dirty || password?.touched)
+                    "
+                  >
+                    <div *ngIf="password?.errors?.['required']">
+                      <span
+                        class="flex items-center pt-2 text-red-800 dark:text-red-400"
+                      >
+                        <mat-icon class="mx-2" fontIcon="error" />
+                        Password is required.
+                      </span>
+                    </div>
+                    <div *ngIf="password?.errors?.['minlength']">
+                      <span
+                        class="flex items-center pt-2 text-red-800 dark:text-red-400"
+                      >
+                        <mat-icon class="mx-2" fontIcon="error" />
+                        password must have at least 8 characters long.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="min-h-6 pl-7 mb-0.5 block">
+                  <input
+                    class="w-4.8 h-4.8 ease -ml-7 rounded-1.4 checked:bg-gradient-to-tl checked:from-blue-500 checked:to-violet-500 after:text-xxs after:font-awesome after:duration-250 after:ease-in-out duration-250 relative float-left mt-1 cursor-pointer appearance-none border border-solid border-slate-200 dark:border-slate-750 bg-white dark:bg-slate-600 bg-contain bg-center bg-no-repeat align-top transition-all after:absolute after:flex after:h-full after:w-full after:items-center after:justify-center after:text-white after:opacity-0 after:transition-all after:content-['\f00c'] checked:border-0 checked:border-transparent checked:bg-transparent checked:after:opacity-100"
+                    type="checkbox"
+                    formControlName="rememberme"
+                    value="rememberme"
+                  />
+                  <label
+                    class="mb-2 ml-1 text-sm font-normal cursor-pointer text-slate-600 dark:text-slate-400"
+                    for="flexCheckDefault"
+                  >
+                    Remember Me
+                  </label>
+                </div>
+
+                <div class="text-center">
+                  <button
+                    color="accent"
+                    mat-raised-button
+                    type="submit"
+                    [disabled]="loginForm.invalid"
+                    class="w-[50%] p-4 dark:disabled:text-white/75"
+                  >
+                    <mat-icon fontIcon="login"></mat-icon>Register
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

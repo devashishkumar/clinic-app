@@ -1,0 +1,97 @@
+<p mat-dialog-title class="w-full spacey-2 h-full min-w-full min-h-full rounded-0 p-[10%] bg-slate-50 dark:bg-slate-850">
+  <span class="px-1 py-2 text-2xl text-black dark:text-white">Edit Appointment</span>
+</p>    
+<mat-dialog-content class="mat-typography" class="w-full spacey-2 h-full min-w-full min-h-full rounded-0 p-[10%] bg-slate-50 dark:bg-slate-850">
+    <form  role="form text-left w-full" enctype="multipart/form-data" (ngSubmit)="editAppointment()" [formGroup]="editAppointmentForm">
+      <div class="grid w-full grid-cols-1">
+        <div class="flex-col w-full mb-5 columns-2">
+            <p class="flex px-1 py-2 text-sm text-black align-middle dark:text-white bg-slate-50 dark:bg-slate-850"><mat-icon class="text-sm">person</mat-icon><span class="font-semibold">Patient:<span class="font-normal"> {{ dataAppointment.title}}</span></span></p>
+            <p class="flex px-1 py-2 text-sm text-black align-middle dark:text-white bg-slate-50 dark:bg-slate-850"><mat-icon class="text-sm">calendar_month</mat-icon><span class="font-semibold">Date:<span class="font-normal"> {{ dataAppointment.start | date:'medium'}}</span></span></p>
+        </div>
+        
+        <div class="flex-col w-full columns-2">
+          <div class="w-full mb-4">
+            <span class="flex justify-start px-1 py-2 text-sm text-black dark:text-white">Choose a date </span>
+            <mat-form-field class="w-full dark:text-white dark:placeholder:text-white" appearance="fill">
+              <input matInput  [min]="minDate" formControlName="start" [max]="maxDate" [matDatepicker]="picker">
+              <mat-datepicker-toggle class="dark:text-white" matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+    
+          <!-- time -->  
+          <div class="w-full mb-4">
+            <span class="flex justify-start px-1 py-2 text-sm text-black dark:text-white">Choose a hour </span>
+            <mat-form-field class="w-full dark:text-white dark:placeholder:text-white">
+              <input 
+                matInput
+                [format]="24"
+                type="datetime"
+                class="w-full "
+                name="selected_time_A"
+                formControlName="time"
+                [ngxMatTimepicker]="pickerA"
+                placeholder="Choose time"
+                [max]="maxTime"
+                [min]="minTime"
+                readonly 
+              />
+              <mat-icon class="cursor-pointer" matSuffix (click)="pickerA.open()">watch_later</mat-icon>
+            </mat-form-field>
+            <ngx-mat-timepicker #pickerA></ngx-mat-timepicker>
+          </div>
+        </div>                
+            
+          <!-- time -->
+          <div class="mb-4">
+            <span class="flex justify-start px-1 py-2 text-sm text-black dark:text-white">Select Clinic </span>
+            <div class="relative flex rounded-md">
+              <select
+                type="text"  
+                class="placeholder:text-gray-700 capitalize text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg  bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3 font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+                placeholder="Clinic" 
+                formControlName="clinic"
+                (change)="doctorsByClinicId"
+                
+              >
+                <option class="capitalize text-start" value="select clinic" selected disabled>select clinic</option>
+                <option class="capitalize text-start" *ngFor="let clinic of clinicList" [value]="clinic.clinic_id">{{clinic.name}} - {{ clinic.province }}/{{clinic.city}}</option>
+              </select>
+              <!-- <div *ngIf="province?.value" class="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+                <mat-icon class="text-base" color="accent">done</mat-icon>
+              </div> -->
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <span class="flex justify-start px-1 py-2 text-sm text-black dark:text-white">Select Doctor </span>
+            <div class="relative flex rounded-md">
+              <select
+                type="text"  
+                class="placeholder:text-gray-700 capitalize text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg  bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3 font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+                placeholder="Doctor" 
+                formControlName="doctor"
+              > 
+                <option class="capitalize text-start" [value]="doctorSelected" selected disabled>{{doctorSelectedName}}</option>
+                <option class="capitalize text-start" *ngFor="let doctor of doctorList" [value]="doctor.id">{{doctor.name}} {{doctor.lastname}} </option>
+              </select>
+              <!-- <div *ngIf="province?.value" class="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+                <mat-icon class="text-base" color="accent">done</mat-icon>
+              </div> -->
+            </div>
+          </div>
+          
+        </div>   
+  
+      
+      <div class="flex justify-center w-full mb-4 space-x-2">
+        <button mat-raised-button type="submit" [disabled]="!(somethingChanged && (!editAppointmentForm.invalid || editAppointmentForm.pristine))" color="accent" ><mat-icon>edit_calendar</mat-icon>Edit Appointment</button>
+        <button mat-raised-button type="button" (click)="deleteAppointment()"  color="warn" ><mat-icon>event_busy</mat-icon>Delete Appointment</button>
+      </div>  
+    </form> 
+  </mat-dialog-content>
+  <mat-dialog-actions align="end" class="w-full spacey-2 h-full min-w-full min-h-full rounded-0 p-[10%] bg-slate-50 dark:bg-slate-850">
+    <button mat-raised-button color="warn" class="z-0" mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
+
+  

@@ -1,0 +1,134 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+/* For use in src/lib/core/theming/_palette.scss */
+$indigo: (
+    50 : #e4e7f1,
+    100 : #bcc4dc,
+    200 : #8f9dc5,
+    300 : #6275ad,
+    400 : #40589c,
+    500 : #1e3a8a,
+    600 : #1a3482,
+    700 : #162c77,
+    800 : #12256d,
+    900 : #0a185a,
+    A100 : #8e9eff,
+    A200 : #5b72ff,
+    A400 : #2846ff,
+    A700 : #0e30ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+
+$clinic-app-primary: mat.define-palette($indigo,600);
+$teal: (
+  50: #f0fdfa,
+  100: #ccfbf1,
+  200: #99f6e4,
+  300: #5eead4,
+  400: #2dcecc,
+  500: #14b8a6,
+  600: #0d9488,
+  700: #0f766e,
+  800: #115e59,
+  900: #134e4a,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+$clinic-app-accent: mat.define-palette($teal, 600);
+
+// The warn palette is optional (defaults to red).
+/* For use in src/lib/core/theming/_palette.scss */
+$warn: (
+    50 : #f7e3ec,
+    100 : #ecbace,
+    200 : #df8cae,
+    300 : #d25d8e,
+    400 : #c83b75,
+    500 : #be185d,
+    600 : #b81555,
+    700 : #af114b,
+    800 : #a70e41,
+    900 : #990830,
+    A100 : #ffc6d3,
+    A200 : #ff93ab,
+    A400 : #ff6083,
+    A700 : #ff4770,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+
+$clinic-app-warn: mat.define-palette($warn, 700);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$clinic-app-theme: mat.define-light-theme((
+  color: (
+    primary: $clinic-app-primary,
+    accent: $clinic-app-accent,
+    warn: $clinic-app-warn,
+  )
+  
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($clinic-app-theme);
+

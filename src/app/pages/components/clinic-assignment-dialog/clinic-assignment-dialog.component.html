@@ -1,0 +1,30 @@
+<p mat-dialog-title class="bg-slate-50 dark:bg-slate-850">
+  <span class="px-1 py-2 text-2xl font-semibold text-black dark:text-white">Assing Doctors</span>
+</p>
+<mat-dialog-content class="mat-typography" class="w-full h-full min-w-full bg-slate-50 dark:bg-slate-850">
+  <form *ngIf="employeeStaff.length>=1" [formGroup]="assignmentForm" (ngSubmit)="saveAssignment()" novalidate>
+
+    <div formArrayName="selectedStaff" *ngFor="let employee of employeeStaff; let i=index"
+      class="flex w-full min-w-full border-b border-black/40 dark:border-white/40 ">
+      <mat-checkbox class="w-full" color="accent" [value]="employee.id" (change)="addToAssignmentList($event)">
+        <div class="flex w-full p-2 align-middle">
+          <div class="flex items-center justify-between align-middle">
+            <img [src]="employee.photo||'assets/img/no-photo-user.png'"
+              class="inline-flex items-center justify-center object-cover object-top w-20 h-20 mr-4 overflow-hidden text-sm text-white bg-slate-500 max-w-none rounded-xl" />
+          </div>
+          <div class="flex items-center justify-between align-middle">
+            <p class="mb-0 text-lg leading-normal align-middle dark:text-white">{{employee.name}} {{employee.lastname}}</p>
+          </div>
+        </div>
+      </mat-checkbox>
+    </div>
+    <div class="flex justify-center w-full my-3">
+      <button mat-raised-button type="submit" [disabled]="thereIsSomebodyToAssing===0"
+        color="accent"><mat-icon>assignment_ind</mat-icon>Assign</button>
+    </div>
+  </form>
+  <p class="w-full text-center text-black 2xl dark:text-white" *ngIf="employeeStaff.length<1">Any user available to be assigned</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="w-full min-w-full bg-slate-50 dark:bg-slate-850">
+  <button mat-raised-button color="warn" class="z-0" mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

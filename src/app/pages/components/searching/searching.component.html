@@ -1,0 +1,58 @@
+<div class="items-center w-full h-full">
+   
+    <form  role="form " [formGroup]="searchForm">
+        <div class="flex"> 
+            <span class="text-lg  absolute  z-[2]  flex h-fit align-middle  rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2  px-1 text-center ">
+                <mat-icon class="text-base text-white">search</mat-icon>
+            </span>         
+            <input 
+                type="text" 
+                class="pl-9 w-full text-sm md:text-normal focus:shadow-primary-outline ease w-12/12 leading-5.6 relative  block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-slate-850 text-white bg-clip-padding py-2  transition-all placeholder:text-gray-500 focus:border-blue-300 focus:outline-none focus:transition-shadow"
+                placeholder="Type here..."
+                type="text" 
+                formControlName="searchInput"
+            />
+        </div>
+    </form>
+</div>
+<mat-list role="list" *ngIf="!openSearchBar" class="absolute right-0 z-50 w-full h-auto text-sm origin-top rounded-md bg-slate-850/100 top-11 transform-dropdown bg-clip-padding">
+    <div mat-list-item role="listitem" class="h-auto " *ngFor="let result of searchResults$ | async">
+        <a routerLink="/dashboard/show-user" (click)="setProfileUser(result)" class="flex w-full p-1 bg-transparent rounded-lg cursor-pointer justify-self-center whitespace-nowrap hover:bg-blue-800/13" *ngIf="result.id">
+            <div class="flex w-full h-full">
+                <div class="w-full my-auto">
+                  <img [src]="result.photo||'assets/img/no-photo-user.jpg'" class="inline-flex items-center justify-center object-cover object-top w-12 h-12 mr-4 overflow-hidden text-sm text-white bg-orange-300 rounded-sm max-w-none" />
+                </div>
+                <div class="flex items-center justify-start w-full min-w-full space-x-5 align-middle">
+                  <span class="flex text-base font-semibold text-white align-middle text-start"><mat-icon class="text-base">person</mat-icon>{{result.name}}  {{result.lastname}} </span>
+                  <span class="flex text-base font-semibold text-white align-middle text-start"><mat-icon class="text-base">phone</mat-icon>{{result.phone | mask:('0000-0000')}}</span>
+                  <span class="flex text-base font-semibold text-white align-middle text-start"><mat-icon class="text-base">assignment_ind</mat-icon>{{result.rol}}</span>
+                </div>
+            </div>
+        </a>
+        <a (click)="setProfileClinic(result)" routerLink="/dashboard/show-clinic" *ngIf="result.clinic_id" class="flex w-full p-1 bg-transparent rounded-lg cursor-pointer justify-self-center whitespace-nowrap hover:bg-blue-800/13">
+            <div class="flex w-full h-full">
+                <div class="w-full my-auto">
+                  <img [src]="result.photo||'assets/img/no-photo-user.png'" class="inline-flex items-center justify-center object-cover object-top w-12 h-12 mr-4 overflow-hidden text-sm text-white bg-orange-300 rounded-sm max-w-none" />
+                </div>
+                <div class="flex justify-start w-full min-w-full space-x-5 align-middle">
+                  <span class="flex text-base font-semibold text-white align-middle text-start"><mat-icon class="text-base">domain</mat-icon>{{result.name}} </span>
+                  <span class="flex text-base font-semibold text-white align-middle text-start"><mat-icon class="text-base">phone</mat-icon>{{result.phone | mask:('0000-0000')}}</span>
+                  <span class="flex text-base font-semibold text-white align-middle text-start"><mat-icon class="text-base">location_on</mat-icon>{{result.province}}/{{result.city}}</span>
+                </div>
+            </div>
+        </a>
+        <a (click)="editEvent(result)" *ngIf="result.appointment_id" class="flex w-full p-1 bg-transparent rounded-lg cursor-pointer justify-self-center whitespace-nowrap hover:bg-blue-800/13">
+            <div class="flex w-full">
+                <div class="w-full my-auto">
+                  <img [src]="result.patient.photo||'assets/img/no-photo-user.png'" class="inline-flex items-center justify-center object-cover object-top w-12 h-12 mr-4 overflow-hidden text-sm text-white bg-orange-300 rounded-sm max-w-none" />
+                </div>
+                <div class="flex justify-start w-full min-w-full space-x-5 align-middle">
+                  <span class="flex text-base font-semibold text-white align-middle text-start"><mat-icon class="text-base">person</mat-icon>{{result.patient.name}} {{result.patient.lastname}}</span>
+                  <span class="flex text-base font-semibold text-white align-middle text-start"><mat-icon class="text-base">phone</mat-icon>{{result.patient.phone | mask:('0000-0000')}}</span>
+                  <span class="flex text-base font-semibold text-white align-middle text-start"><mat-icon class="text-base">event</mat-icon>{{result.start | date:'mediumDate' }}</span>
+                  <span class="flex text-base font-semibold text-white align-middle text-start"><mat-icon class="text-base">schedule</mat-icon>{{result.start | date:'shortTime'}}</span>
+                </div>
+            </div>
+        </a>
+    </div>
+</mat-list>

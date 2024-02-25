@@ -1,0 +1,82 @@
+<div class="flex flex-wrap mx-1 mt-3">
+  <div class="w-full max-w-full mt-0 mb-6 lg:mb-0 lg:flex-none">
+    <div
+      class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid rounded-md shadow-xl dark:bg-slate-850 dark:shadow-dark-xl dark:bg-gray-950 border-black-125 bg-clip-border">
+      <div class="p-4 pb-0 mb-0 rounded-t-4">
+        <div class="flex justify-between">
+          <p class="text-2xl font-semibold text-black text-start dark:text-white">User's table</p>
+          <button mat-raised-button color="primary" (click)="openDialog()" placeholder="User" class="z-0">
+            <mat-icon fontIcon="person_add"></mat-icon>
+            New User
+          </button>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="items-center w-full mt-4 mb-4 align-top border-collapse border-gray-200 dark:border-white/40">
+          <tbody>
+            <tr *ngFor="let user of userList"
+              class="flex w-full min-w-full border-b border-black/40 dark:border-white/40 ">
+              <a routerLink="/dashboard/show-user" [ngClass]="{'opacity-50 pointer-events-none ':!user.validationState}"
+                (click)="this.updateProfileService.userToUpdate(user)"
+                class="flex w-full h-full ml-3 rounded-lg dark:hover:bg-blue-500/13 hover:bg-blue-500/13">
+                <td class="flex p-2 align-middle bg-transparent w-fit whitespace-nowrap">
+                  <div class="flex items-center align-top">
+                    <img [src]="user.photo||'assets/img/no-photo-user.jpg'"
+                      class="inline-flex items-center justify-center object-cover object-top w-20 h-20 mr-4 overflow-hidden text-sm text-white bg-orange-300 max-w-none rounded-xl" />
+                  </div>
+                </td>
+                <td class="w-full p-2 align-middle bg-transparent whitespace-nowrap ">
+                  <div class="text-center align-top">
+                    <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Full name:</p>
+                    <p class="mb-0 text-lg leading-normal dark:text-white">{{user.name}} {{user.lastname}}</p>
+                  </div>
+                </td>
+                <td class="w-full p-2 align-middle bg-transparent whitespace-nowrap ">
+                  <div class="text-center align-top">
+                    <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">E-mail:</p>
+                    <p class="mb-0 text-lg leading-normal dark:text-white">{{user.email}}</p>
+                  </div>
+                </td>
+                <td class="w-full p-2 align-middle bg-transparent whitespace-nowrap ">
+                  <div class="text-center align-top">
+                    <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Rol:</p>
+                    <p class="mb-0 text-lg leading-normal uppercase dark:text-white">{{user.rol}}</p>
+                  </div>
+                </td>
+              </a>
+              <td *ngIf="(currentUserLogged.rol==='admin')"
+                class="px-4 py-2 align-middle bg-transparent w-fit whitespace-nowrap ">
+                <div class="flex-col items-center space-y-1 align-top">
+                  <p class="mb-0 text-xs font-semibold leading-tight text-center dark:text-white dark:opacity-60">
+                    Actions:</p>
+                  <div class="flex items-center justify-center">
+                    <button *ngIf="!user.validationState"
+                      [disabled]="(user.rol==='admin' || currentUserLogged.id === user.id)"
+                      (click)="changeUserState(user.id ,currentUserLogged.id)" mat-raised-button color="primary"
+                      class="z-0">
+                      <mat-icon fontIcon="person"></mat-icon> Anable
+                    </button>
+                    <button *ngIf="user.validationState"
+                      [disabled]="(user.rol==='admin' || currentUserLogged.id === user.id)"
+                      (click)="changeUserState(user.id ,currentUserLogged.id)" mat-raised-button color="warn"
+                      class="z-0">
+                      <mat-icon fontIcon="person_off"></mat-icon> Disable
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <div *ngIf="length>pageSize" class="flex justify-end px-2 pt-2 mx-2 mt-2">
+              <mat-paginator class="flex h-full bg-transparent dark:text-white w-fit" MatPaginatorIntl
+                (page)="handlePageEvent($event)" [length]="length" [pageSize]="pageSize" [pageIndex]="pageIndex">
+              </mat-paginator>
+            </div>
+          </tbody>
+        </table>
+        <div *ngIf="length===0" class="flex justify-center w-full p-5 ">
+          <p class="text-2xl font-bold text-black dark:text-white">No user has been registered yet</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,70 @@
+<mat-drawer-container class="w-full h-screen h-min-full bg-slate-50 dark:bg-slate-850/40" autosize>
+  <mat-drawer #drawer class="h-full p-2 rounded-sm lg:p-5 w-fit bg-slate-850/100" mode="over">
+    <div class="h-19">
+      <a  routerLink="/dashboard/calendar"class="block px-8 py-6 m-0 text-sm text-left whitespace-nowrap dark:text-white text-slate-700">
+        <span class="ml-1 text-2xl font-semibold text-slate-50">The Clinic</span>
+      </a>
+    </div>
+    <hr class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent" />
+    <div class="items-center block w-auto max-h-screen mt-2 overflow-auto">
+      <ul class="flex flex-col pl-0 mb-0 space-y-3">
+        <li class="mt-0.5 w-full" *ngFor="let sideNavOption of sideNavMenu">
+          <a routerLink="{{sideNavOption.url}}" routerLinkActive="bg-blue-500/13 ease-nav-brand"  class="flex items-center justify-start px-4 py-2 mx-2 space-x-2 text-lg align-middle rounded-lg cursor-pointer text-slate-50" >
+            <mat-icon fontIcon={{sideNavOption.icon}}/>
+            <span >{{sideNavOption.title}}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </mat-drawer>
+  <main>
+    <nav class="sticky h-25 md:h-20  border-none flex flex-wrap items-center justify-between px-2 py-2 mx-1 transition-all  duration-250 rounded-md top-1 backdrop-saturate-200 bg-slate-850/100 z-[1]">
+      <div class="block md:flex items-center h-full justify-between w-full  py-1  space-x-0 md:space-x-[5%] flex-wrap-inherit" navbar-main navbar-scroll="true"> 
+        <app-breadcrumbs></app-breadcrumbs>
+        <div class="flex items-center justify-end grow">
+          <div class="flex items-center w-full ">
+            <div class="relative flex flex-wrap items-end w-full transition-all rounded-lg ease">
+              <app-searching class="w-full"></app-searching>
+            </div>
+            <div class="mx-0 md:mx-1">
+              <button [matMenuTriggerFor]="menu" class="text-white"><mat-icon>more_vert</mat-icon></button>
+              <mat-menu #menu="matMenu" class="space-y-3 bg-slate-850/100">
+                <div class="text-white" >
+                  <a  routerLink="/dashboard/show-user" (click)="this.updateProfileService.userToUpdate(loggedUser)" class="flex flex-col w-full px-2 py-2 bg-transparent rounded-lg cursor-pointer xl:py-6 justify-self-center dark:hover:bg-blue-500/13 whitespace-nowrap hover:bg-blue-500/13 hover:text-slate-700">
+                    <div class="flex">
+                      <div class="my-auto">
+                        <img [src]="loggedUser.photo||'assets/img/no-photo-user.jpg'" class="inline-flex items-center justify-center object-cover object-top w-20 h-20 mr-4 overflow-hidden text-sm text-white bg-orange-300 max-w-none rounded-xl" />
+                      </div>
+                      <div class="flex flex-col justify-center">
+                        <p class="mb-1 text-sm font-normal capitalize text-white/80"><span class="font-semibold">{{loggedUser.name}}  {{loggedUser.lastname}}</span></p>
+                        <p class="flex items-center justify-start mb-0 text-xs text-white/80">
+                          <mat-icon  class="relative top-0 text-sm leading-normal" fontIcon="person"/>
+                          User Profile
+                        </p>
+                      </div>
+                    </div>
+                    <div class="grid w-full mt-3">
+                      <p class="grid w-full mb-1 text-xs font-normal text-center lowercase dark:text-white/80"><span class="font-semibold">{{loggedUser.email}}</span></p>
+                    </div>
+                  </a>
+                </div>
+                <div class="w-full p-2 text-white">
+                  <app-setter-theme></app-setter-theme>
+                </div>
+                <div class="w-full p-2 text-white">
+                  <button  (click)="logout()" mat-raised-button class="w-full" color="warn" > Log Out<mat-icon  fontIcon="logout"/></button>
+                </div>
+              </mat-menu> 
+            </div>
+            <div class="mx-0 md:mx-1 ">
+              <button type="button" (click)="drawer.toggle()">
+                <mat-icon   class="text-white"  fontIcon="menu"></mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>  
+    </nav>
+    <router-outlet></router-outlet>
+  </main>
+</mat-drawer-container>

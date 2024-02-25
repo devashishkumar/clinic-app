@@ -1,0 +1,143 @@
+<p mat-dialog-title class="w-full spacey-2 h-full min-w-full min-h-full rounded-0 p-[10%] bg-slate-50 dark:bg-slate-850">
+  <span class="px-1 py-2 text-2xl text-black dark:text-white">Create New Appointment</span>
+</p>
+<mat-dialog-content class="mat-typography" class="w-full spacey-2 h-full min-w-full min-h-full rounded-0 p-[10%] bg-slate-50 dark:bg-slate-850">
+  <form *ngIf="!isDocument_numberCorrenct" role="form text-left w-full" enctype="multipart/form-data" (ngSubmit)="confirmCurrentPatient()" [formGroup]="confirmPatientForm">
+    <div class="w-full mb-4">
+        <span class="flex justify-start px-1 py-2 text-sm text-black dark:text-white">Confirmate your DUI</span>
+        <div class="relative">
+            <input 
+            type="text" 
+            class="placeholder:text-gray-700 disabled:opacity-50 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg  bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3  font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+            placeholder="Document Number" 
+            formControlName="document_number"
+            mask="00000000-0"
+            />
+        </div>
+        <div *ngIf="document_number?.invalid && (document_number?.dirty || document_number?.touched)"
+            class="alert alert-danger">
+
+            <div  *ngIf="document_number?.errors?.['required']">
+            <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                <mat-icon class="mx-2"  fontIcon="error"/> 
+                password is required.
+            </span>
+            </div>
+            <div *ngIf="document_number?.errors?.['minlength']">
+            <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                <mat-icon class="mx-2"  fontIcon="error"/>
+                Name must be at least 9 characters long.
+            </span>
+            </div>
+        </div>
+    </div> 
+    <div *ngIf="!isDocument_numberCorrenct" class="w-full mb-4">
+        <button mat-raised-button type="submit" class="dark:disabled:text-white/50" [disabled]="confirmPatientForm.invalid" [disabled]="!isDocument_numberCorrenct" color="warn" ><mat-icon>badge</mat-icon>Confirmate your Document Number</button>
+    </div>        
+  </form>
+
+  <form *ngIf="isDocument_numberCorrenct" role="form text-left w-full" enctype="multipart/form-data" (ngSubmit)="createAppointment()" [formGroup]="newAppointmentForm">
+    <div class="grid w-full grid-cols-1">
+      <div class="flex flex-col items-center justify-center w-full p-5 columns-1">
+        <div class="flex flex-col p-3 rounded-lg shadow-lg columns-1 w-fit bg-slate-100">
+          <div class="flex w-full">
+              <p class="text-xl font-bold text-slate-850">Patient ID</p>
+          </div>
+          <div class="flex w-full">
+              <div class="my-auto">
+                  <img [src]="patient?.photo||'assets/img/no-photo-user.png'"
+                      class="inline-flex items-center justify-center object-cover object-top mr-4 overflow-hidden text-sm text-white bg-orange-300 w-34 h-34 max-w-none rounded-xl" />
+              </div>
+              <div class="flex flex-col justify-center">
+                  <p class="mb-1 text-sm font-normal capitalize text-slate-850"><span
+                          class="font-semibold">Full Name : </span><span class="font-normal">{{
+                          patient?.name }} {{patient?.lastname}}</span></p>
+                  <p class="mb-1 text-sm font-normal capitalize text-slate-850"><span
+                          class="font-semibold">Document Number : </span><span
+                          class="font-normal">{{ patient!.document_number | mask:'00000000-0'}}</span></p>
+              </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex-col w-full columns-2">
+        <div class="w-full mb-4">
+          <span class="flex justify-start px-1 py-2 text-sm text-black dark:text-white">Choose a date </span>
+          <mat-form-field class="w-full dark:text-white dark:placeholder:text-white" appearance="fill">
+            <input matInput   [min]="minDate" formControlName="start" [max]="maxDate" [matDatepicker]="picker">
+            <mat-datepicker-toggle class="dark:text-white" matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+  
+        <!-- time -->  
+        <div class="w-full mb-4">
+          <span class="flex justify-start px-1 py-2 text-sm text-black dark:text-white">Choose a hour </span>
+          <mat-form-field class="w-full dark:text-white dark:placeholder:text-white">
+            <input 
+              matInput
+              [format]="24"
+              type="datetime"
+              class="w-full"
+              name="selected_time_A"
+              formControlName="time"
+              [ngxMatTimepicker]="pickerA"
+              [max]="maxTime"
+		          [min]="minTime"
+              readonly 
+            />
+            <mat-icon class="cursor-pointer" matSuffix (click)="pickerA.open()">watch_later</mat-icon>
+          </mat-form-field>
+          <ngx-mat-timepicker class="bg-red-700" #pickerA></ngx-mat-timepicker>
+        </div>
+      </div>                
+          
+        <!-- time -->
+        <div class="mb-4">
+          <span class="flex justify-start px-1 py-2 text-sm text-black dark:text-white">Select a Clinic </span>
+          <div class="relative flex rounded-md">
+            <select
+              type="text"  
+              class="placeholder:text-gray-700 capitalize text-start focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg  bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3 font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+              placeholder="Clinic" 
+              formControlName="clinic"
+              (change)="doctorsByClinicId"
+              
+            >
+              <option class="capitalize text-start" value="" selected disabled>select clinic</option>
+              <option class="capitalize text-start" *ngFor="let clinic of clinicList" [value]="clinic.clinic_id">{{clinic.name}} - {{ clinic.province }}/{{clinic.city}}</option>
+            </select>
+            <!-- <div *ngIf="province?.value" class="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+              <mat-icon class="text-base" color="accent">done</mat-icon>
+            </div> -->
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <span class="flex justify-start px-1 py-2 text-sm text-black dark:text-white">Select a Doctor </span>
+          <div class="relative flex rounded-md">
+            <select
+              type="text"  
+              class="placeholder:text-gray-700 capitalize text-start focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg  bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3 font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+              placeholder="Doctor" 
+              formControlName="doctor"
+            >
+              <option class="capitalize text-start"  value="" selected disabled>select Doctor</option>
+              <option class="capitalize text-start"  *ngFor="let doctor of doctorList" [value]="doctor.id">{{doctor.name}} {{doctor.lastname}} </option>
+            </select>
+            <!-- <div *ngIf="province?.value" class="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+              <mat-icon class="text-base" color="accent">done</mat-icon>
+            </div> -->
+          </div>
+        </div>   
+      </div>   
+
+    
+    <div class="flex justify-center w-full mb-4">
+        <button mat-raised-button type="submit" [disabled]="newAppointmentForm.invalid" color="accent" ><mat-icon>event</mat-icon>Create New Appointment</button>
+    </div>  
+  </form> 
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="w-full spacey-2 h-full min-w-full min-h-full rounded-0 p-[10%] bg-slate-50 dark:bg-slate-850">
+  <button mat-raised-button color="warn" class="z-0" mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

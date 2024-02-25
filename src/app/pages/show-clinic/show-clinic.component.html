@@ -1,0 +1,211 @@
+<div class="w-full p-6 mx-auto">
+    <div class="flex flex-wrap -mx-3">
+      <form
+        (submit)="updateProfile()"
+        [formGroup]="profileForm"
+        class="w-full max-w-full px-3 shrink-0 md:w-8/12 md:flex-0"
+       >
+        
+        <div class="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
+            <div class="flex w-full p-5">
+                <p class="flex justify-start text-2xl font-semibold text-slate-850 dark:text-slate-50">Edit  Information for Clinic</p>
+            </div>
+            <div class="grid grid-cols-1 gap-4 p-5">
+                <div class="grid w-full grid-cols-1 gap-4 mb-4 md:grid-cols-3" formGroupName="information">
+                  <div class="mb-4">
+                    <span class="px-1 py-2 text-sm dark:text-white/80 text-black/80">Register Number</span>
+                    <div class="relative flex rounded-md">
+                      <input 
+                        type="text"  
+                        class="placeholder:text-gray-700  text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg  bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3 font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+                        placeholder="Register Number" 
+                        formControlName="register_number"
+                        mask="0000-0000-000-0"
+                      />
+                      <div *ngIf="!register_number?.invalid && register_number?.touched" class="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+                        <mat-icon class="text-base" color="accent">done</mat-icon>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-full mb-4 ">
+                    <span class="px-1 py-2 text-sm dark:text-white/80 text-black/80">Phone</span>
+                    <div class="relative flex rounded-md">
+                      <input 
+                      type="text"  
+                      class="placeholder:text-gray-700  text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg  bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3 font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+                      placeholder="Phone" 
+                      formControlName="phone"
+                      prefix="(+503) "
+                      mask="0000-0000"
+                      />
+                      <div *ngIf="!phone_number?.invalid && phone_number?.touched" class="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+                        <mat-icon class="text-base" color="accent">done</mat-icon>
+                      </div>
+                    </div>
+                  
+                  </div>
+                  <div class="w-full mb-4">
+                    <span class="px-1 py-2 text-sm dark:text-white/80 text-black/80">Name</span>
+                    <div class="relative flex rounded-md">
+                      <input 
+                      type="text"  
+                      class="placeholder:text-gray-700 text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg  bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3  font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+                      placeholder="Name" 
+                      formControlName="name"
+                      />
+                      <div *ngIf="!name?.invalid && name?.touched" class="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+                        <mat-icon class="text-base" color="accent">done</mat-icon>
+                      </div>
+                    </div>
+                    <div *ngIf="name?.invalid && (name?.dirty || name?.touched)"
+                        class="alert alert-danger">
+    
+                      <div  *ngIf="name?.errors?.['required']">
+                        <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                          <mat-icon class="mx-2"  fontIcon="error"/> 
+                          Name is required.
+                        </span>
+                      </div>
+                      <div *ngIf="name?.errors?.['minlength']">
+                        <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                          <mat-icon class="mx-2"  fontIcon="error"/>
+                          Name must be at least 3 characters long.
+                        </span>
+                      </div>
+                      <div *ngIf="name?.errors?.['maxlength']">
+                        <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                          <mat-icon class="mx-2"  fontIcon="error"/>
+                          Name must be longger than 25 characters.
+                        </span>
+                      </div>
+                      <div *ngIf="name?.errors?.['forbiddenName']">
+                        <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                          <mat-icon class="mx-2"  fontIcon="error"/>
+                            Name only could have letters a-z.
+                        </span>
+                        <span  class="flex items-center pt-2 text-red-800 dark:text-red-400">
+                          <mat-icon class="mx-2"  fontIcon="error"/>
+                            Only two names are allowed.
+                        </span>
+                      </div>
+                    </div>
+      
+                  </div>
+                </div>
+                <div class="grid w-full grid-cols-1 gap-4 mb-4 md:grid-cols-4" formGroupName="address">
+                  <div class="mb-4">
+                    <span class="px-1 py-2 text-sm dark:text-white/80 text-black/80">Country</span>
+                    <div class="relative flex rounded-md">
+                      <input 
+                        type="text"  
+                        class="placeholder:text-gray-700  text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg  bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3 font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+                        placeholder="Country" 
+                        formControlName="country"
+                        value="country" 
+                      />
+                      <div *ngIf="!country?.invalid && country?.touched" class="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+                        <mat-icon class="text-base" color="accent">done</mat-icon>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                      <span class="px-1 py-2 text-sm dark:text-white/80 text-black/80">Province </span>
+                      <div class="relative flex rounded-md">
+                        <select
+                          type="text"  
+                          class="placeholder:text-gray-700  text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg  bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3 font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+                          placeholder="Province" 
+                          formControlName="province"
+                          (change)="citiesByProvince"
+                          
+                        >
+                        <option value="" selected disabled>select Province</option>
+                        <option *ngFor="let province of provinces" [value]="province">{{province}}</option>
+                      </select>
+                      <div *ngIf="province?.value && province?.touched" class="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+                        <mat-icon class="text-base" color="accent">done</mat-icon>
+                      </div>
+                      </div>
+                  </div>
+
+                  <div class="mb-4">
+                      <span class="px-1 py-2 text-sm dark:text-white/80 text-black/80">City</span>
+                      <div class="relative flex rounded-md ">
+                        <select 
+                          type="text"  
+                          class="placeholder:text-gray-700  text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg  bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3 font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+                          placeholder="City" 
+                          formControlName="city"
+                          
+                        >
+                        <option value="" selected disabled>select city</option>
+                        <option *ngFor="let city of citiesByProvince" [value]="city">{{city}}</option>
+                      </select>
+                      <div *ngIf="city?.value && city?.touched" class="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+                        <mat-icon class="text-base" color="accent">done</mat-icon>
+                      </div>
+                      </div>
+                  </div>
+
+                  <div class="mb-4">
+                      <span class="px-1 py-2 text-sm dark:text-white/80 text-black/80">Street</span>
+                      <div class="relative flex rounded-md">
+                        <input 
+                          type="text"  
+                          class="placeholder:text-gray-700  text-sm focus:shadow-primary-outline leading-5.6 ease block w-full appearance-none rounded-lg  bg-blue-500/13 dark:border-slate-750 dark:placeholder:text-slate-300  bg-clip-padding py-4 px-3 font-normal text-slate-800 dark:text-slate-100 transition-all focus:border-slate-300 dark:focus:border-slate-700   focus:outline-none focus:transition-shadow" 
+                          placeholder="Street" 
+                          formControlName="street"
+                         
+                        />
+                        <div *ngIf="!street?.invalid && street?.touched" class="absolute inset-y-0 right-0 flex items-center pr-3 text-sm leading-5">
+                          <mat-icon class="text-base" color="accent">done</mat-icon>
+                        </div>
+                      </div>
+                  </div>
+
+              </div>
+              </div>
+            <div class="flex justify-end w-full p-5 ">
+                <button mat-raised-button type="submit" [disabled]="!( somethingChanged && (!profileForm.invalid || profileForm.pristine))" color="accent" class="z-0"><mat-icon>update</mat-icon>update</button>
+            </div>
+        </div>
+      </form>
+      <form (submit)="startLoaddingPhoto()" [formGroup]="photoForm" class="w-full max-w-full px-3 mt-6 shrink-0 md:w-4/12 md:flex-0 md:mt-0">
+        <div class="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
+          <div>
+            
+            <img *ngIf="!imagenTemp" class="w-full  border-gray-500 border-0.5 rounded-md" [src]="currectPhoto||'assets/img/no-photo-clinic.jpg'" alt="profile cover image">
+            <img *ngIf="imagenTemp" [src]="imagenTemp" class="w-full  border-gray-500 border-0.5 rounded-md" />
+          </div>
+   
+          <div *ngIf="userRol==='admin'" class="border-black/12.5 rounded-t-2xl p-6 text-center pt-0 pb-6 lg:pt-2 lg:pb-4">
+            <div  class="flex justify-center py-3 space-x-3">
+              <div class="flex w-fit">
+                <button mat-raised-button [disabled]="!currectPhoto" type="button" (click)="deletePhoto(profileSelected.clinic_id)" color="warn"   class="z-0">
+                  <mat-icon  fontIcon="delete"></mat-icon> <span>Delete</span> 
+                </button>
+              </div>
+              <div *ngIf="!this.photoForm.get('photoSrc')?.touched  && this.photoForm.get('photoSrc')?.value" class="flex w-fit">
+                <button mat-raised-button type="submit" color="accent" [disabled]="isLoading"  class="z-0 dark:disabled:text-white">
+                  <mat-icon  *ngIf="!isLoading" fontIcon="upload_imagen"></mat-icon>  
+                  <mat-icon *ngIf="isLoading" class="animate-spin" fontIcon="autorenew"></mat-icon> <span>Upload</span> 
+                </button>
+              </div>
+              
+              <button mat-raised-button type="button" color="primary" class="z-0">
+                <label for="photo" class="flex rounded-md cursor-pointer h-15">
+                  <mat-icon  class="text-lg " fontIcon="camera"></mat-icon> <span>New</span>
+                </label>
+                <input  id="photo"  accept="image/png, image/jpeg, image/jpg" formControlName="photo" type="file" (change)="preparePhoto($event.target)" class="hidden w-full h-full " />
+              </button>
+             
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </div>
+</div>
+<div >
+  <app-clinic-assignment></app-clinic-assignment>
+</div>
